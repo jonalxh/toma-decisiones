@@ -2,7 +2,6 @@
   "name": "toma-decisiones",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/toma-decisiones/",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
