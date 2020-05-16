@@ -2,7 +2,7 @@
 
 Esta pequeña aplicación resuelve operaciones de toma de decisiones aplicando los siguientes criterios:
 
-Small app to solve decision-making operations applying the following criteria: 
+_Small app to solve decision-making operations applying the following criteria:_
 
 - Wald (Maximin)
 - Maximax

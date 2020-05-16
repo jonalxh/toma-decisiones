@@ -65,15 +65,15 @@
 						</tr>
 						<tr>
 							<td class="font-weight-bold">Mínimo</td>
-							<td v-for="col in cols" :key="col">
-								--	
+							<td v-for="col in cols" :key="col" class="minCol">
+								--
 							</td>
 							<td>--</td>
 							<td>--</td>
 						</tr>
 						<tr>
 							<td class="font-weight-bold">Máximo</td>
-							<td v-for="col in cols" :key="col">
+							<td v-for="col in cols" :key="col" class="maxCol">
 								--
 							</td>
 							<td>--</td>
@@ -101,7 +101,7 @@ export default {
 			scenarios: "",
 			criteria: "",
 			criteriaOptions: [
-				{ text: "Wald (Maximin)", value: "WALD", dscription: "Se asigna el peor de los escenarios y se escoge el mejor" },
+				{ text: "Wald (Maximin)", value: "WALD", description: "Se asigna el peor de los escenarios y se escoge el mejor" },
 				{ text: "Maximax", value: "MAXIMAX" },
 				{ text: "Savage", value: "SAVAGE" },
 				{ text: "Laplace", value: "LAPLACE" },
@@ -111,8 +111,6 @@ export default {
 			cols: "",
 			rows: "",
 
-			/* items: [{ name: "Modelo 1" }],
-			fields: ["Modelo"], */
 			result: undefined,
 			totals: [],
 			totalMin: [],
@@ -123,7 +121,6 @@ export default {
 		generateResults() {
 			this.getTotals();
 
-			
 			switch (this.criteria) {
 				case "WALD": {
 					this.wald();
@@ -148,36 +145,55 @@ export default {
 			this.cols = this.scenarios.split(",");
 			this.rows = this.models.split(","); */
 		},
-		getTotals() {
+		async getTotals() {
 			this.totals = [];
 			this.totalMin = [];
 			this.totalMax = [];
 
-			$.each($("#main-table tbody tr"), (index, row) => {
+			await $.each($("#main-table tbody tr"), (index, row) => {
 				let nums = [];
-				$.each($(row).find("input"), (index, input) => {
+				$.each($(row).find("input"), (i, input) => {
 					nums.push($(input).val());
 				});
 				const minRow = Math.min.apply(Math, nums); // Encuentro el mínimo de la fila
-				const maxRow = Math.max.apply(Math, nums); // Encuentro el mínimo de la fila
-				
-				this.totals.push(nums)
-				//this.totals.push(res);
+				const maxRow = Math.max.apply(Math, nums); // Encuentro el máximo de la fila
+
+				this.totals.push(nums);
+
 				$(row)
 					.find(".minRow")
 					.html(minRow);
 				$(row)
 					.find(".maxRow")
 					.html(maxRow);
-				/* $(row)
-					.find(".minCol")
-					.html(minCol);
-				$(row)
-					.find(".maxCol")
-					.html(maxCol); */
 
 				//this.result = Math.max.apply(Math, this.totals); // Saco el máximo de todos los totales
 			});
+
+			this.getColTotals();
+		},
+		getColTotals() {
+			try {
+				for (let i in this.totals[0]) {
+					const nums = this.totals.map((val) => Number(val[i]));
+
+					const minCol = Math.min.apply(
+						Math,
+						nums.filter((n) => !isNaN(n))
+					); // Encuentro el mínimo de la columna
+
+					const maxCol = Math.max.apply(
+						Math,
+						nums.filter((n) => !isNaN(n))
+					); // Encuentro el máximo de la columna
+
+					// Asignación en la tabla
+					$($("#main-table tbody td.minCol")[i]).html(minCol);
+					$($("#main-table tbody td.maxCol")[i]).html(maxCol);
+				}
+			} catch (error) {
+				console.error("getColTotals -> error", error);
+			}
 		},
 		wald() {
 			$.each($("#main-table tbody tr"), (index, row) => {
