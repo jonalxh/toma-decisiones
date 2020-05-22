@@ -341,40 +341,40 @@ export default {
     savageMin() {
       this.getColTotals();
       let newMatriz = [];
-      const newMatrizMax = [];
-      const MatrizMax = [];
+      const newMatrizMin = [];
+      const MatrizMin = [];
 
       $.each(this.totalsCols, (index, value) => {
         const a = value.map((num) => {
-          return this.totalMaxCol[index] - num;
+          return num - this.totalMinCol[index];
         });
         newMatriz.push(a);
       });
-      console.log("savageMax -> newMatriz", newMatriz);
+      console.log("savageMin -> newMatriz", newMatriz);
       for (let i in newMatriz[0]) {
         const nums = newMatriz.map((val) => Number(val[i]));
-        newMatrizMax.push(nums);
+        newMatrizMin.push(nums);
 
         const maxCol = Math.max.apply(
           Math,
           nums.filter((n) => !isNaN(n))
         ); // Encuentro el máximo de la columna
-        console.log("savageMax -> maxCol", maxCol);
-        MatrizMax.push(maxCol);
+        console.log("savageMin -> maxCol", maxCol);
+        MatrizMin.push(maxCol);
       }
-      // console.log("savageMax -> newMatrizMax", newMatrizMax);
-      // console.log("savageMax -> MatrizMax", MatrizMax);
+      console.log("savageMin -> newMatrizMin", newMatrizMin);
+      console.log("savageMin -> MatrizMin", MatrizMin);
       const min = Math.min.apply(
         Math,
-        MatrizMax.filter((n) => !isNaN(n) && isFinite(n))
+        MatrizMin.filter((n) => !isNaN(n) && isFinite(n))
       ); // Encuentro el máximo de la columna
-      const position = MatrizMax.indexOf(min) + 1;
+      const position = MatrizMin.indexOf(min) + 1;
       // console.log("savagMax -> this.totalsCols", this.totalsCols);
-      console.log("savageMax -> min", min);
+      console.log("savageMin -> min", min);
       this.result =
-        "Según el criterio de Savage (Ganancia) la alternativa <b>" +
+        "Según el criterio de Savage (Perdida) la alternativa <b>" +
         String(position) +
-        "</b> es la opción que debemos seguir. <br> Aplicando en la segunda matriz min-max el resultado es: <br>" +
+        "</b> es la opción que debemos seguir. <br> Aplicando en la segunda matriz max-min el resultado es: <br>" +
         String(min) +
         "</b>";
     },
