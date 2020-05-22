@@ -2,6 +2,8 @@
 
 Esta pequeña aplicación resuelve operaciones de toma de decisiones aplicando los siguientes criterios:
 
+## Demo:
+https://jonalxh.github.io/toma-decisiones/
 
 Funcionando:
 - Wald (Maximin)
