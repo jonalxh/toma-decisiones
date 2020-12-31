@@ -3,73 +3,30 @@
     <h3>Toma de decisiones</h3>
     <b-row>
       <b-col>
-        <b-form-group
-          description="Las columnas son los datos verticales de una tabla"
-          label="Cantidad de columnas"
-          label-for="cols"
-        >
-          <b-form-input
-            type="number"
-            min="1"
-            max="50"
-            id="cols"
-            v-model.number="cols"
-          ></b-form-input>
+        <b-form-group description="Las columnas son los datos verticales de una tabla" label="Cantidad de columnas" label-for="cols">
+          <b-form-input type="number" min="1" max="50" id="cols" v-model.number="cols"></b-form-input>
         </b-form-group>
       </b-col>
       <b-col>
-        <b-form-group
-          description="Las filas son los datos horizontales de una tabla"
-          label="Cantidad de filas"
-          label-for="rows"
-        >
-          <b-form-input
-            type="number"
-            min="1"
-            max="50"
-            id="rows"
-            v-model.number="rows"
-          ></b-form-input>
+        <b-form-group description="Las filas son los datos horizontales de una tabla" label="Cantidad de filas" label-for="rows">
+          <b-form-input type="number" min="1" max="50" id="rows" v-model.number="rows"></b-form-input>
         </b-form-group>
       </b-col>
       <b-col>
-        <b-form-group
-          id="criteria"
-          description="Selecciona un valor"
-          label="Criterio de generación"
-          label-for="criteria"
-        >
-          <b-form-select
-            v-model="criteria"
-            :options="criteriaOptions"
-            @change="generateResults()"
-          ></b-form-select>
+        <b-form-group id="criteria" description="Selecciona un valor" label="Criterio de generación" label-for="criteria">
+          <b-form-select v-model="criteria" :options="criteriaOptions" @change="generateResults()"></b-form-select>
         </b-form-group>
       </b-col>
     </b-row>
     <b-row class="mt-3" v-if="false">
       <b-col>
-        <b-form-group
-          description="Ingresa los nombres separados por comas (,)"
-          label="Nombre de los escenarios o estados"
-          label-for="scenarios"
-        >
+        <b-form-group description="Ingresa los nombres separados por comas (,)" label="Nombre de los escenarios o estados" label-for="scenarios">
           <b-form-input id="scenarios" v-model="scenarios" trim></b-form-input>
         </b-form-group>
       </b-col>
       <b-col>
-        <b-form-group
-          id="models"
-          description="Ingresa los valores separados por comas (,)"
-          label="Modelos o alternativas"
-          label-for="models"
-        >
-          <b-form-input
-            id="models"
-            @keydown.space.prevent
-            v-model="models"
-            trim
-          ></b-form-input>
+        <b-form-group id="models" description="Ingresa los valores separados por comas (,)" label="Modelos o alternativas" label-for="models">
+          <b-form-input id="models" @keydown.space.prevent v-model="models" trim></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
@@ -79,10 +36,7 @@
     <b-row class="mt-5" id="result">
       <h3 class="text-center w-100">Tabla de resultados</h3>
       <div class="table-responsive">
-        <table
-          class="mx-auto mt-3 table table-hover table-bordered"
-          id="main-table"
-        >
+        <table class="mx-auto mt-3 table table-hover table-bordered" id="main-table">
           <thead class="thead-dark font-weight-bold">
             <tr>
               <th rowspan="2">Alternativas</th>
@@ -100,12 +54,7 @@
             <tr v-for="row in rows" :key="row">
               <td class="font-weight-bold">Alternativa {{ row }}</td>
               <td v-for="col in cols" :key="col">
-                <b-form-input
-                  type="number"
-                  trim
-                  placeholder="Ingresa valor"
-                  @input="generateResults()"
-                ></b-form-input>
+                <b-form-input type="number" trim placeholder="Ingresa valor" @input="generateResults()"></b-form-input>
               </td>
               <td class="minRow"></td>
               <td class="maxRow"></td>
@@ -126,12 +75,7 @@
         </table>
       </div>
 
-      <b-col
-        class="mx-auto mt-4 text-center border border-dark p-4"
-        v-if="result != undefined"
-        cols="11"
-        md="10"
-      >
+      <b-col class="mx-auto mt-4 text-center border border-dark p-4" v-if="result != undefined" cols="11" md="10">
         <h4>Resultado: <span v-html="result"> </span></h4>
       </b-col>
     </b-row>
@@ -152,8 +96,7 @@ export default {
         {
           text: "Wald (Maximin)",
           value: "WALD",
-          description:
-            "Se asigna el peor de los escenarios y se escoge el mejor",
+          description: "Se asigna el peor de los escenarios y se escoge el mejor",
         },
         { text: "Maximax", value: "MAXIMAX" },
         { text: "Savage (Perdida)", value: "SAVAGEMIN" },
@@ -331,12 +274,7 @@ export default {
       const position = MatrizMax.indexOf(min) + 1;
       // console.log("savagMax -> this.totalsCols", this.totalsCols);
       console.log("savageMax -> min", min);
-      this.result =
-        "Según el criterio de Savage (Ganancia) la alternativa <b>" +
-        String(position) +
-        "</b> es la opción que debemos seguir. <br> Aplicando en la segunda matriz min-max el resultado es: <br>" +
-        String(min) +
-        "</b>";
+      this.result = "Según el criterio de Savage (Ganancia) la alternativa <b>" + String(position) + "</b> es la opción que debemos seguir. <br> Aplicando en la segunda matriz min-max el resultado es: <br>" + String(min) + "</b>";
     },
     savageMin() {
       this.getColTotals();
@@ -371,12 +309,7 @@ export default {
       const position = MatrizMin.indexOf(min) + 1;
       // console.log("savagMax -> this.totalsCols", this.totalsCols);
       console.log("savageMin -> min", min);
-      this.result =
-        "Según el criterio de Savage (Perdida) la alternativa <b>" +
-        String(position) +
-        "</b> es la opción que debemos seguir. <br> Aplicando en la segunda matriz max-min el resultado es: <br>" +
-        String(min) +
-        "</b>";
+      this.result = "Según el criterio de Savage (Perdida) la alternativa <b>" + String(position) + "</b> es la opción que debemos seguir. <br> Aplicando en la segunda matriz max-min el resultado es: <br>" + String(min) + "</b>";
     },
     laplace() {},
   },
